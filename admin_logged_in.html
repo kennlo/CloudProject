@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>My App</title>
+    <script src="https://sdk.amazonaws.com/js/aws-sdk-2.3.5.js"></script>
+    <script src="https://rawgit.com/aws/amazon-cognito-identity-js/master/dist/aws-cognito-sdk.min.js"></script>
+    <script src="https://rawgit.com/aws/amazon-cognito-identity-js/master/dist/amazon-cognito-identity.min.js"></script>
+
+
+    <script>
+        var idToken = null;
+
+        function checkLogin() {
+            auth();
+            var poolData = {
+                UserPoolId: 'us-east-1_opAonnmbX',
+                ClientId: '	36883kb37k2roafu1mp4770bjo'
+            };
+            // Get the current user
+            var userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
+            var cognitoUser = userPool.getCurrentUser();
+
+            if (cognitoUser != null) {
+                cognitoUser.getSession(function (err, session) {
+                    if (err) {
+                        alert(err);
+                        return;
+                    }
+                    console.log('session validity: ' + session.isValid());
+                });
+            } else {
+                // If the user is not signed in, redirect to the sign-in page
+                window.location.href = "https://adminaccess.auth.us-east-1.amazoncognito.com/login?client_id=36883kb37k2roafu1mp4770bjo&response_type=token&scope=email+openid&redirect_uri=http%3A%2F%2Flocalhost%3A8000%2Fadmin_logged_in.html";
+            }
+            var url_string = window.location.href;
+            var url = new URL(url_string);
+            idToken = url.searchParams.get("id_token");
+            if (idToken != null) {
+                document.getElementById("welcomeMsg").innerHTML = "signed in";
+                // auth();
+                document.body.style.display = "block"; // Show the body
+            } 
+            else {
+                document.body.style.display = "none"; // Hide the body
+            }
+        }
+
+        function auth() {
+            AWS.config.update({
+                region: "us-east-1",
+            });
+
+            AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+                IdentityPoolId: 'us-east-1:b54e49a4-6c11-4b54-ad74-e3714694da57',
+                Logins: {
+                    "cognito-idp.us-east-1.amazonaws.com/us-east-1_opAonnmbX": idToken
+                }
+            });
+        }
+
+        function insertItem() {
+            var docClient = new AWS.DynamoDB.DocumentClient();
+
+            var params = {
+                TableName: "Person",
+                Item: {
+                    "FirstName": "John", // Partition Key
+                    "LastName": "Smith", // Sort Key
+                    "info": {
+                        "FavoriteColor": "blue",
+                        "YearOfBirth": 1942
+                    }
+                }
+            };
+            docClient.put(params, function (err, data) {
+                if (err) {
+                    document.getElementById('textarea').innerHTML = "Unable to add item: " + "\n" + JSON.stringify(err, undefined, 2);
+                } else {
+                    document.getElementById('textarea').innerHTML = "PutItem succeeded: " + "\n" + JSON.stringify(data, undefined, 2);
+                }
+            });
+        }
+
+        function readItem() {
+
+            var docClient = new AWS.DynamoDB.DocumentClient();
+
+            var params = {
+                TableName: "Person",
+                Key: {
+                    "FirstName": "John",// Partition Key
+                    "LastName": "Smith" // Sort/Range Key
+                }
+            };
+            docClient.get(params, function (err, data) {
+                if (err) {
+                    document.getElementById('textarea').innerHTML = "Unable to read item: " + "\n" + JSON.stringify(err, undefined, 2);
+                } else {
+                    document.getElementById('textarea').innerHTML = "GetItem succeeded: " + "\n" + JSON.stringify(data, undefined, 2);
+                }
+            });
+        }
+           
+    </script>
+        <style>
+            body {
+                display: none; /* Hide the body by default */
+            }
+            </style>
+</head>
+
+
+
+<body onload="checkLogin()">
+    <h1 id="welcomeMsg"></h1>
+    <h1>Add Item to Price List</h1>
+    <form id="myForm">
+        <label for="name">ID:</label>
+        <input type="number" id="id" name="id"><br><br>
+        <label for="price">Price:</label>
+        <input type="number" id="price" name="price"><br><br>
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name"><br><br>
+        <input type="submit" value="Submit">
+    </form>
+    <button id="dummy-order">Add Dummy Order</button>
+    <a href="https://guestuserauth.auth.us-east-1.amazoncognito.com/logout?client_id=3h931vdjdqa3s6mene834ck3q&logout_uri=http%3A%2F%2Flocalhost%3A8000%2Flogged_out.html">Logout</a>
+    <script>
+        document.getElementById('myForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+            var form = event.target;
+            var data = {
+                id: form.elements['id'].value,
+                price: form.elements['price'].value,
+                name: form.elements['name'].value,
+            };
+            console.log(data);
+            fetch('https://hb8pt1nnyd.execute-api.us-east-1.amazonaws.com/items', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': idToken
+                },
+                body: JSON.stringify(data)
+            })
+                .then(response => response.json())
+                .then(result => {
+                    console.log(result);
+                    alert(result);
+                    form.reset();
+                })
+                .catch(error => {
+                    console.error(error);
+                    alert('An error occurred. Please try again.');
+                });
+        });
+    </script>
+</body>
+
+</html>

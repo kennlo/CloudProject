@@ -6,6 +6,7 @@
 <head>
     <title>DynamoDB Form</title>
     <script src="https://sdk.amazonaws.com/js/aws-sdk-2.283.1.min.js"></script>
+    <script type="text/javascript" src="./config.js"></script>
 </head>
 
 <body>
@@ -53,11 +54,6 @@
                     console.error(error);
                     alert('An error occurred. Please try again.');
                 });
-        });
-        AWS.config.update({
-            accessKeyId: 'AKIAZQ3DUNFW5M2L3N5U',
-            secretAccessKey: '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',
-            region: 'us-east-1'
         });
         var ddb = new AWS.DynamoDB({ apiVersion: 'latest' });
 

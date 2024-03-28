@@ -31,11 +31,11 @@
                 });
             } else {
                 // If the user is not signed in, redirect to the sign-in page
-                window.location.href = "https://adminaccess.auth.us-east-1.amazoncognito.com/login?client_id=36883kb37k2roafu1mp4770bjo&response_type=code&scope=email+openid&redirect_uri=https%3A%2F%2Fmain.d1io6yqn0md748.amplifyapp.com%2Fadmin_logged_in.html";
+                //window.location.href = "https://adminaccess.auth.us-east-1.amazoncognito.com/login?client_id=36883kb37k2roafu1mp4770bjo&response_type=code&scope=email+openid&redirect_uri=https%3A%2F%2Fmain.d1io6yqn0md748.amplifyapp.com%2Fadmin_logged_in.html";
             }
             var url_string = window.location.href;
             var url = new URL(url_string);
-            idToken = url.searchParams.get("id_token");
+            idToken = url.searchParams.get("code");
             if (idToken != null) {
                 document.getElementById("welcomeMsg").innerHTML = "signed in";
                 // auth();

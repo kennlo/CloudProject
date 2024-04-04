@@ -15,6 +15,7 @@ export default class ItemList extends Component {
     imageURL: '',
     name: '',
     price: '',
+    id: '',
   };
 
   componentDidMount = () => {
@@ -44,6 +45,7 @@ export default class ItemList extends Component {
     super(props);
     this.handleSend = this.handleSend.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.handleDelete = this.handleDelete.bind(this);
   }
 
   async handleSend() {
@@ -74,6 +76,13 @@ export default class ItemList extends Component {
     console.log(this.state.user);
   }
 
+  async handleDelete() {
+    await axios.delete(`https://hb8pt1nnyd.execute-api.us-east-1.amazonaws.com/items/${this.state.id}`,
+      {
+        id: this.state.id,
+      });
+  }
+
   render() {
     return (
       <Fragment>
@@ -93,28 +102,52 @@ export default class ItemList extends Component {
               <div>
                 {this.state.user === 'cb2550db-00e0-4210-8be7-61853387898c' ? (
                   <form onSubmit={this.handleSend}>
-                    <label>ImageURL</label>
-                    <input
-                      type="string"
-                      name="imageURL"
-                      onChange={this.handleChange}
-                      value={this.state.imageURL}
-                    />
-                    <label>Name</label>
-                    <input
-                      type="string"
-                      name="name"
-                      onChange={this.handleChange}
-                      value={this.state.name}
-                    />
-                    <label>Price</label>
-                    <input
-                      type="number"
-                      name="price"
-                      onChange={this.handleChange}
-                      value={this.state.price}
-                    />
+                    <h1> Add Item to Inventory </h1>
+                    <body>
+                      <label>ImageURL</label>
+                      <input
+                        type="string"
+                        name="imageURL"
+                        onChange={this.handleChange}
+                        value={this.state.imageURL}
+                      />
+                    </body>
+                    <body>
+                      <label>Name</label>
+                      <input
+                        type="string"
+                        name="name"
+                        onChange={this.handleChange}
+                        value={this.state.name}
+                      />
+                    </body>
+                    <body>
+                      <label>Price</label>
+                      <input
+                        type="number"
+                        name="price"
+                        onChange={this.handleChange}
+                        value={this.state.price}
+                      />
+                    </body>
                     <button type="submit">Add Item</button>
+                  </form>
+                ) : null}
+              </div>
+              <div>
+                {this.state.user === 'cb2550db-00e0-4210-8be7-61853387898c' ? (
+                  <form onSubmit={this.handleDelete}>
+                    <h1> Delete Item from Inventory </h1>
+                    <body>
+                      <label>Item ID</label>
+                      <input
+                        type="string"
+                        name="id"
+                        onChange={this.handleChange}
+                        value={this.state.id}
+                      />
+                    </body>
+                    <button type="submit">Delete Item</button>
                   </form>
                 ) : null}
               </div>
@@ -124,7 +157,7 @@ export default class ItemList extends Component {
             <section className="section">
               <div className='container'>
                 <h1>Cart</h1>
-                
+
               </div>
             </section>
           </div>

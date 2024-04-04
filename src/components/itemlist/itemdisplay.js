@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Auth } from 'aws-amplify';
 
 class ItemDisplay extends Component {
 
@@ -8,6 +9,12 @@ class ItemDisplay extends Component {
       quantities: {}
     };
     this.SendToCart = this.SendToCart.bind(this);
+  }
+
+  componentDidMount = () => {
+    Auth.currentAuthenticatedUser()
+      .then(user => { this.setState({ user: user.username, }); })
+      .catch(err => console.log(err));
   }
 
   increaseQuantity = (id) => {
@@ -54,9 +61,11 @@ class ItemDisplay extends Component {
           <tr key={key} className="container" style={{ padding: '30px' }}>
             <img src={value.imageURL} alt="Item Image" width="100" height="100" />
             <td style={{ padding: '0 10px' }}>
-              <body>
-                ID: {value.id}
-              </body>
+              {this.state.user === 'cb2550db-00e0-4210-8be7-61853387898c' ? (
+                <body>
+                  ID: {value.id}
+                </body>
+              ) : null}
               <body style={{ width: '100px', wordWrap: 'break-word' }}>
                 Name: {value.name}
               </body>

@@ -4,8 +4,29 @@ class ItemDisplay extends Component {
 
   constructor(props) {
     super(props);
+    this.state = {
+      quantities: {}
+    };
     this.SendToCart = this.SendToCart.bind(this);
   }
+
+  increaseQuantity = (id) => {
+    this.setState(prevState => ({
+      quantities: {
+        ...prevState.quantities,
+        [id]: (prevState.quantities[id] || 0) + 1
+      }
+    }));
+  };
+
+  decreaseQuantity = (id) => {
+    this.setState(prevState => ({
+      quantities: {
+        ...prevState.quantities,
+        [id]: (prevState.quantities[id] > 0) ? prevState.quantities[id] - 1 : 0
+      }
+    }));
+  };
 
   SendToCart = (id, name, price, quantity) => {
     // await axios.put('https://hb8pt1nnyd.execute-api.us-east-1.amazonaws.com/items',
@@ -43,15 +64,15 @@ class ItemDisplay extends Component {
                 Price: {value.price}
               </body>
               <body>
-                <button onClick={(e) => { e.preventDefault(); }}>
+                <button onClick={(e) => { e.preventDefault(); this.decreaseQuantity(value.id); }}>
                   -
                 </button>
-                <input type="number" id="quantityInput" value='0' style={{ width: '30px' }} readOnly/>
-                <button onClick={(e) => { e.preventDefault(); }}>
+                <input type="number" value={0 || this.state.quantities[value.id]} style={{ width: '30px' }} readOnly />
+                <button onClick={(e) => { e.preventDefault(); this.increaseQuantity(value.id); }}>
                   +
                 </button>
               </body>
-              <button onClick={(e) => { e.preventDefault(); this.SendToCart(value.id, value.name, value.price); }}>
+              <button onClick={(e) => { e.preventDefault(); this.SendToCart(value.id, value.name, value.price, this.state.quantities[value.id] || 0); }}>
                 Add to Cart
               </button>
             </td>

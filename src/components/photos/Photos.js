@@ -35,7 +35,8 @@ export default class Photos extends Component {
             name: item['item-name'],
             amount: item.amount,
             status: item['order-status'],
-            ...(this.state.user === 'cb2550db-00e0-4210-8be7-61853387898c' ? { orderid:item['order-id'],userid: item.userid  } : {})
+            orderid:item['order-id'],
+            ...(this.state.user === 'cb2550db-00e0-4210-8be7-61853387898c' ? { userid: item.userid  } : {})
           }))
       });
     });
@@ -50,7 +51,7 @@ export default class Photos extends Component {
     //   itemid = response.data.item.userid;
     // });
     // if (itemid === this.state.user) {
-    await axios.put('https://hb8pt1nnyd.execute-api.us-east-1.amazonaws.com/orders', {
+    await axios.patch('https://hb8pt1nnyd.execute-api.us-east-1.amazonaws.com/orders', {
       'order-id': this.state.inputValue,
       'order-status': 'Cancelled'
     });

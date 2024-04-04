@@ -21,6 +21,7 @@ import Welcome from './components/auth/Welcome';
 import Footer from './components/Footer';
 import VerifyAccount from './components/auth/VerifyAccount';
 import ResendVerification from './components/auth/ResendVerification';
+import ItemList from './components/itemlist/itemlist';
 
 library.add(faEdit);
 
@@ -134,6 +135,7 @@ class App extends Component {
               <ProtectedRoute path="/photos" loggedIn={this.state.isAuthenticated} verified={this.state.isVerified} component={Photos} />
               <ProtectedRoute path="/admin" loggedIn={this.state.isAuthenticated} verified={this.state.isVerified} component={PhotosAdmin} />
               <ProtectedRoute path="/profile" loggedIn={this.state.isAuthenticated} verified={this.state.isVerified} component={ProfileAdmin} />
+              <ProtectedRoute path="/itemlist" loggedIn={this.state.isAuthenticated} verified={this.state.isVerified} component={ItemList} />
               <Route exact path="/admin" render={(props) => <PhotosAdmin {...props} auth={authProps} />} />
               <Route exact path="/login" render={(props) => <LogIn {...props} auth={authProps} handleLogIn={this.handleLogIn} />} />
               <Route exact path="/verify" render={(props) => <VerifyAccount {...props} auth={authProps} />} />

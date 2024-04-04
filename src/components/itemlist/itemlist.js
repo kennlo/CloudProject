@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { Auth } from 'aws-amplify';
 import axios from 'axios';
-// import TableDisplay from '../table/TableDisplay';
+//import TableDisplay from '../table/TableDisplay';
 import ItemDisplay from '../itemlist/itemdisplay';
 
 export default class ItemList extends Component {

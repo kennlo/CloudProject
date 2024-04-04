@@ -12,7 +12,6 @@ export default class ItemList extends Component {
     user: '',
     loaded: false,
     tableData: [],
-    id: '',
     imageURL: '',
     name: '',
     price: '',
@@ -50,7 +49,7 @@ export default class ItemList extends Component {
   async handleSend() {
     await axios.put('https://hb8pt1nnyd.execute-api.us-east-1.amazonaws.com/items',
       {
-        id: this.state.id,
+        id: String(new Date().getTime()),
         price: this.state.price,
         name: this.state.name,
         imageURL: this.state.imageURL,
@@ -92,13 +91,6 @@ export default class ItemList extends Component {
           <div>
             {this.state.user === 'cb2550db-00e0-4210-8be7-61853387898c' ? (
               <form onSubmit={this.handleSend}>
-                <label>Item ID</label>
-                <input
-                  type="string"
-                  name="id"
-                  onChange={this.handleChange}
-                  value={this.state.id}
-                />
                 <label>ImageURL</label>
                 <input
                   type="string"

@@ -8,7 +8,7 @@ export default class Navbar extends Component {
       <nav className="navbar" role="navigation" aria-label="main navigation">
         <div className="navbar-brand">
           <a className="navbar-item" href="/">
-            <img src="devhour-logo.png" width="112" height="28" alt="aws logo" />
+            <img src="5891-cat-sus.png" width="112" height="28" alt="aws logo" />
           </a>
         </div>
 

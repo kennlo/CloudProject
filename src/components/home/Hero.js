@@ -5,7 +5,7 @@ export default function Hero() {
     <section className="hero is-primary">
       <div className="hero-body">
         <div className="container">
-          <img src="devhour-banner.jpg" alt="AWS DEV Hour" />
+          <img src="cat-smacking-other-cat-cat.gif" alt="AWS DEV Hour" />
         </div>
       </div>
     </section>

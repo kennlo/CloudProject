@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
-import {Auth} from 'aws-amplify';
+import { Auth } from 'aws-amplify';
 import axios from 'axios';
-import {v4 as uuidv4} from 'uuid';
+import { v4 as uuidv4 } from 'uuid';
 
 export default class PhotosAdmin extends Component {
 
@@ -9,19 +9,19 @@ export default class PhotosAdmin extends Component {
     response: '',
     loaded: 'false',
     uploading: 'false',
-    user:'',
+    user: '',
   };
 
   componentDidMount = () => {
     Auth.currentAuthenticatedUser()
-      .then(user => {this.setState({user: user.username,});})
+      .then(user => { this.setState({ user: user.username, }); })
       .catch(err => console.log(err));
-  }  
+  }
   constructor(props) {
     super(props);
     this.state = {
       itemname: '',
-      amount:'',
+      amount: '',
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -38,7 +38,7 @@ export default class PhotosAdmin extends Component {
   }
   async handleSubmit(event) {
     event.preventDefault();
-    const { user} = this.state;
+    const { user } = this.state;
     const uid = uuidv4();
     await axios.put(
       'https://hb8pt1nnyd.execute-api.us-east-1.amazonaws.com/orders',
@@ -60,12 +60,30 @@ export default class PhotosAdmin extends Component {
       .catch(err => {
         console.log(err);
       });
+    await axios.put(
+      'https://hb8pt1nnyd.execute-api.us-east-1.amazonaws.com/orderitem',
+      {
+        id: uid,
+        itemID: new Date().getTime(),
+        quantity: Math.random(),
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }
+    ).then(res => {
+      console.log(res);
+    })
+      .catch(err => {
+        console.log(err);
+      });
   }
   render() {
     return (
       <Fragment>
         <form onSubmit={this.handleSubmit}>
-          <label>Item Name:</label>
+          {/* <label>Item Name:</label>
           <input
             type="text"
             name="itemname"
@@ -79,9 +97,9 @@ export default class PhotosAdmin extends Component {
             name="amount"
             onChange={this.handleChange}
             value={this.state.amount}
-          />
+          /> */}
 
-          <button type="submit">Send</button>
+          <button type="submit">Add Dummy Order</button>
         </form>
       </Fragment>
     );

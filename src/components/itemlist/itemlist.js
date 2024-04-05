@@ -51,6 +51,7 @@ export default class ItemList extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
     this.handleAddItem = this.handleAddItem.bind(this);
+    this.handleDeleteCartItem = this.handleDeleteCartItem.bind(this);
   }
 
   async handleSend() {
@@ -78,6 +79,16 @@ export default class ItemList extends Component {
       return { items: newItems };
     });
   };
+
+  handleDeleteCartItem = (key) => {
+    {
+      this.setState(prevState => {
+        const newItems = new Map(prevState.items);
+        newItems.delete(key);
+        return { items: newItems };
+      });
+    }
+  }
 
   handleChange(event) {
     const inputValue = event.target.value;
@@ -169,8 +180,8 @@ export default class ItemList extends Component {
           <div style={{ width: '30%', borderLeft: '2px solid black' }}>
             <section className="section">
               <div className='container'>
-                <h1>Cart</h1>
-                <CartDisplay tableData={this.state.items} />
+                <h1 style={{ borderBottom: '2px solid black' }}>Cart</h1>
+                <CartDisplay tableData={this.state.items} onDeleteItem = {this.handleDeleteCartItem} />
               </div>
             </section>
           </div>

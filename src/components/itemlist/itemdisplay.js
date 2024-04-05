@@ -63,7 +63,8 @@ class ItemDisplay extends Component {
     // ).then(res => {
     //   console.log(res);
     // });
-    this.props.onAddItem(id, new Item(name, price, quantity));
+    if(quantity > 0)
+      this.props.onAddItem(id, new Item(name, price, quantity));
   }
 
   render() {

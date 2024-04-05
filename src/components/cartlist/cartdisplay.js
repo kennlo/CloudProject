@@ -7,6 +7,10 @@ class CartDisplay extends Component {
     };
   }
 
+  deleteCartItem = (id) => {
+    console.log('deleteCartItem:' + id);
+    this.props.onDeleteItem(id);
+  }
 
   render() {
     const items = Array.from(this.props.tableData.entries());
@@ -15,8 +19,6 @@ class CartDisplay extends Component {
       return (
         <div>
           <h1>Your cart is empty</h1>
-          <h1>{this.props.tableData.size}</h1>
-
         </div>
       );
     }
@@ -24,7 +26,7 @@ class CartDisplay extends Component {
     return (
       <div>
         {/* <h1>{this.props.tableData.size}</h1> */}
-        <table style={{ width: '100%', border:'none' }}>
+        <table style={{ width: '100%', border: 'none' }}>
           <thead>
             <tr>
               <th>Name</th>
@@ -33,15 +35,17 @@ class CartDisplay extends Component {
             </tr>
           </thead>
           <tbody>
-            {items.map(item => 
-              item[1].quantity > 0 && (
-                <tr key={item.id}>
-                  <td>{item[1].name}</td>
-                  <td>{item[1].quantity}</td>
-                  <td>{item[1].price * item[1].quantity}</td>
+            {items.map(([itemKey, item]) =>
+              (
+                <tr key={itemKey}>
+                  <td>{item.name}</td>
+                  <td>{item.quantity}</td>
+                  <td>{item.price * item.quantity}</td>
+                  <button onClick={(e) => { e.preventDefault(); this.deleteCartItem(itemKey); }}>
+                    x
+                  </button>
                 </tr>
-              )
-            )}
+              ))}
           </tbody>
         </table>
       </div >

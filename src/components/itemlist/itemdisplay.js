@@ -1,6 +1,18 @@
 import React, { Component } from 'react';
 import { Auth } from 'aws-amplify';
 
+// import { cartMap } from './itemlist';
+
+
+export class Item{
+  constructor( name, price, quantity){
+    this.name = name;
+    this.price = price;
+    this.quantity = quantity;
+  }
+
+}
+
 class ItemDisplay extends Component {
 
   constructor(props) {
@@ -51,7 +63,7 @@ class ItemDisplay extends Component {
     // ).then(res => {
     //   console.log(res);
     // });
-    console.log(id, name, price, quantity);
+    this.props.onAddItem(id, new Item(name, price, quantity));
   }
 
   render() {

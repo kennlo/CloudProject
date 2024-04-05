@@ -3,6 +3,9 @@ import { Auth } from 'aws-amplify';
 import axios from 'axios';
 //import TableDisplay from '../table/TableDisplay';
 import ItemDisplay from '../itemlist/itemdisplay';
+import CartDisplay from '../cartlist/cartdisplay';
+
+
 
 export default class ItemList extends Component {
   //instance variables
@@ -16,6 +19,7 @@ export default class ItemList extends Component {
     name: '',
     price: '',
     id: '',
+    items: new Map(),
   };
 
   componentDidMount = () => {
@@ -46,6 +50,7 @@ export default class ItemList extends Component {
     this.handleSend = this.handleSend.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
+    this.handleAddItem = this.handleAddItem.bind(this);
   }
 
   async handleSend() {
@@ -65,6 +70,14 @@ export default class ItemList extends Component {
       console.log(res);
     });
   }
+
+  handleAddItem = (key, value) => {
+    this.setState(prevState => {
+      const newItems = new Map(prevState.items);
+      newItems.set(key, value);
+      return { items: newItems };
+    });
+  };
 
   handleChange(event) {
     const inputValue = event.target.value;
@@ -97,7 +110,7 @@ export default class ItemList extends Component {
               <div className="container">
                 <h1>Items</h1>
                 <p className="subtitle is-5">All the items available.</p>
-                <ItemDisplay tableData={this.state.tableData} />
+                <ItemDisplay tableData={this.state.tableData} onAddItem={this.handleAddItem} />
               </div>
               <div>
                 {this.state.user === 'cb2550db-00e0-4210-8be7-61853387898c' ? (
@@ -153,11 +166,11 @@ export default class ItemList extends Component {
               </div>
             </section>
           </div>
-          <div style={{ width: '30%' }}>
+          <div style={{ width: '30%', borderLeft: '2px solid black' }}>
             <section className="section">
               <div className='container'>
                 <h1>Cart</h1>
-
+                <CartDisplay tableData={this.state.items} />
               </div>
             </section>
           </div>

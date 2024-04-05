@@ -6,7 +6,8 @@ class CartDisplay extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      tableData: this.props.tableData
+      tableData: this.props.tableData,
+      user: this.props.userid
     };
   }
 
@@ -15,15 +16,15 @@ class CartDisplay extends Component {
     this.props.onDeleteItem(id);
   }
 
-  sendOrder = async () => {
+  sendOrder = async() => {
     const orderID = uuidv4();
-
+    
     await axios.put('https://hb8pt1nnyd.execute-api.us-east-1.amazonaws.com/orders',
       {
         id: orderID,
         orderdate: new Date().toString(),
         'order-status': 'pending',
-        userid: this.state,
+        userid: this.state.user,
       },
       {
         headers: {
@@ -41,7 +42,7 @@ class CartDisplay extends Component {
 
       const uid = uuidv4();
       console.log(key);
-      
+
       await axios.put(
         'https://hb8pt1nnyd.execute-api.us-east-1.amazonaws.com/orderitem',
         {

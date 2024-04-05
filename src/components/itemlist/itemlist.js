@@ -181,7 +181,7 @@ export default class ItemList extends Component {
             <section className="section">
               <div className='container'>
                 <h1 style={{ borderBottom: '2px solid black' }}>Cart</h1>
-                <CartDisplay tableData={this.state.items} onDeleteItem = {this.handleDeleteCartItem} />
+                <CartDisplay userid={this.state.user} tableData={this.state.items} onDeleteItem = {this.handleDeleteCartItem} />
               </div>
             </section>
           </div>

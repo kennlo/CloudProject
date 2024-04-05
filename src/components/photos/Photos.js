@@ -32,10 +32,10 @@ export default class Photos extends Component {
         tableData: response.data
           .filter(item => this.state.user === 'cb2550db-00e0-4210-8be7-61853387898c' || item.userid === this.state.user)
           .map(item => ({
-            name: item['item-name'],
-            amount: item.amount,
+            id: item.id,
             status: item['order-status'],
             orderid:item['order-id'],
+            orderdate: item.orderdate,
             ...(this.state.user === 'cb2550db-00e0-4210-8be7-61853387898c' ? { userid: item.userid  } : {})
           }))
       });

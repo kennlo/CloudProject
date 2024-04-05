@@ -1,12 +1,11 @@
 import React, { Component, Fragment } from 'react';
 import {Auth} from 'aws-amplify';
 import axios from 'axios';
+import {v4 as uuidv4} from 'uuid';
 
 export default class PhotosAdmin extends Component {
 
   state = {
-    itemname: '',
-    amount:'',
     response: '',
     loaded: 'false',
     uploading: 'false',
@@ -39,14 +38,14 @@ export default class PhotosAdmin extends Component {
   }
   async handleSubmit(event) {
     event.preventDefault();
-    const { user,itemname,amount } = this.state;
-
+    const { user} = this.state;
+    const uid = uuidv4();
     await axios.put(
       'https://hb8pt1nnyd.execute-api.us-east-1.amazonaws.com/orders',
       {
-        'order-id': new Date().getTime(),
-        'item-name': itemname,
-        amount: amount,
+        id: uid,
+        'order-id': String(new Date().getTime()),
+        orderdate: new Date().toString(),
         'order-status': 'pending',
         userid: user,
       },

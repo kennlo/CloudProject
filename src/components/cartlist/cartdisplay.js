@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 class CartDisplay extends Component {
   constructor(props) {
     super(props);
@@ -10,6 +11,11 @@ class CartDisplay extends Component {
   deleteCartItem = (id) => {
     console.log('deleteCartItem:' + id);
     this.props.onDeleteItem(id);
+  }
+
+  sendOrder = () => {
+    const key = uuidv4();
+    console.log('sendOrder:' + key);
   }
 
   render() {
@@ -48,6 +54,9 @@ class CartDisplay extends Component {
               ))}
           </tbody>
         </table>
+        <button onClick={(e) => { e.preventDefault(); this.sendOrder(); }}>
+          Send Order
+        </button>
       </div >
     );
   }

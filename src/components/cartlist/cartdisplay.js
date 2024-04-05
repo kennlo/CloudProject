@@ -33,13 +33,15 @@ class CartDisplay extends Component {
             </tr>
           </thead>
           <tbody>
-            {items.map(item => (
-              <tr key={item.id}>
-                <td>{item[1].name}</td>
-                <td>{item[1].quantity}</td>
-                <td>{item[1].price * item[1].quantity}</td>
-              </tr>
-            ))}
+            {items.map(item => 
+              item[1].quantity > 0 && (
+                <tr key={item.id}>
+                  <td>{item[1].name}</td>
+                  <td>{item[1].quantity}</td>
+                  <td>{item[1].price * item[1].quantity}</td>
+                </tr>
+              )
+            )}
           </tbody>
         </table>
       </div >

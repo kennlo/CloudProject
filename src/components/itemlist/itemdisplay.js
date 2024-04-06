@@ -1,5 +1,13 @@
 import React, { Component } from 'react';
 import { Auth } from 'aws-amplify';
+import {
+  Stack,
+  Button,
+  Image,
+  Box,
+  Text,
+} from '@chakra-ui/react';
+
 
 // import { cartMap } from './itemlist';
 
@@ -69,38 +77,32 @@ class ItemDisplay extends Component {
 
   render() {
     return (
-      <div className="grid-container" style={{ gridTemplateColumns: 'auto auto auto', display: 'inline-grid', rowGap: '50px', columnGap: '50px' }}>
+      <Box display="grid" gridTemplateColumns="repeat(3, 1fr)" gap="40px" padding="20px">
         {Array.from(this.props.tableData.entries()).map(([key, value]) => (
-          <tr key={key} className="container" style={{ padding: '30px' }}>
-            <img src={value.imageURL} alt="Item Image" width="100" height="100" />
-            <td style={{ padding: '0 10px' }}>
-              {this.state.user === 'cb2550db-00e0-4210-8be7-61853387898c' ? (
-                <body>
-                  ID: {value.id}
-                </body>
-              ) : null}
-              <body style={{ width: '100px', wordWrap: 'break-word' }}>
-                Name: {value.name}
-              </body>
-              <body>
-                Price: {value.price}
-              </body>
-              <body>
-                <button onClick={(e) => { e.preventDefault(); this.decreaseQuantity(value.id); }}>
+          <Box key={key} borderWidth="1px" borderRadius="lg" overflow="hidden">
+            <Image src={value.imageURL} alt={value.name} height="200px" objectFit="cover" />
+            <Box p="6">
+              {this.state.user === 'cb2550db-00e0-4210-8be7-61853387898c' && (
+                <Text fontSize="sm" color="gray.500" mb="2">ID: {value.id}</Text>
+              )}
+              <Text fontWeight="bold" fontSize="xl">{value.name}</Text>
+              <Text fontSize="lg" mt="2">${value.price}</Text>
+              <Stack direction="row" spacing="4" mt="4">
+                <Button onClick={() => this.decreaseQuantity(value.id)} colorScheme="gray">
                   -
-                </button>
-                <input type="number" value={0 || this.state.quantities[value.id]} style={{ width: '30px' }} readOnly />
-                <button onClick={(e) => { e.preventDefault(); this.increaseQuantity(value.id); }}>
+                </Button>
+                <input type="number" value={this.state.quantities[value.id] || 0} style={{ width: '50px', textAlign: 'center' }} readOnly />
+                <Button onClick={() => this.increaseQuantity(value.id)} colorScheme="gray">
                   +
-                </button>
-              </body>
-              <button onClick={(e) => { e.preventDefault(); this.SendToCart(value.id, value.name, value.price, this.state.quantities[value.id] || 0); }}>
+                </Button>
+              </Stack>
+              <Button mt="4" colorScheme="blue" onClick={() => this.SendToCart(value.id, value.name, value.price, this.state.quantities[value.id] || 0)}>
                 Add to Cart
-              </button>
-            </td>
-          </tr>
+              </Button>
+            </Box>
+          </Box>
         ))}
-      </div>
+      </Box>
     );
   }
 }

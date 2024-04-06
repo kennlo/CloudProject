@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Box, Button, Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react';
 import { v4 as uuidv4 } from 'uuid';
 import axios from 'axios';
 
@@ -79,34 +80,35 @@ class CartDisplay extends Component {
     }
 
     return (
-      <div>
-        {/* <h1>{this.props.tableData.size}</h1> */}
-        <table style={{ width: '100%', border: 'none' }}>
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Quantity</th>
-              <th>Price</th>
-            </tr>
-          </thead>
-          <tbody>
-            {items.map(([itemKey, item]) =>
-              (
-                <tr key={itemKey}>
-                  <td>{item.name}</td>
-                  <td>{item.quantity}</td>
-                  <td>{item.price * item.quantity}</td>
-                  <button onClick={(e) => { e.preventDefault(); this.deleteCartItem(itemKey); }}>
-                    x
-                  </button>
-                </tr>
-              ))}
-          </tbody>
-        </table>
-        <button onClick={(e) => { e.preventDefault(); this.sendOrder(); }}>
+      <Box>
+        <Table variant="simple" colorScheme="black">
+          <Thead>
+            <Tr>
+              <Th>Name</Th>
+              <Th>Quantity</Th>
+              <Th>Price</Th>
+              <Th>Action</Th>
+            </Tr>
+          </Thead>
+          <Tbody>
+            {items.map(([itemKey, item]) => (
+              <Tr key={itemKey}>
+                <Td>{item.name}</Td>
+                <Td>{item.quantity}</Td>
+                <Td>{item.price * item.quantity}</Td>
+                <Td>
+                  <Button colorScheme="red" onClick={() => this.deleteCartItem(itemKey)}>
+                    Remove
+                  </Button>
+                </Td>
+              </Tr>
+            ))}
+          </Tbody>
+        </Table>
+        <Button mt={4} colorScheme="green" onClick={this.sendOrder}>
           Send Order
-        </button>
-      </div >
+        </Button>
+      </Box>
     );
   }
 }

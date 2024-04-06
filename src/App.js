@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-d
 import { Auth } from 'aws-amplify';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faEdit } from '@fortawesome/free-solid-svg-icons';
+// 1. import `ChakraProvider` component
+import { ChakraProvider } from '@chakra-ui/react';
 
 import './App.css';
 
@@ -124,33 +126,37 @@ class App extends Component {
       user: this.state.user,
     };
     return (
-      !this.state.isAuthenticating &&
-      <div className="App">
-        <Router>
-          <div>
-            <Navbar auth={authProps} handleLogOut={this.handleLogOut} />
-            <Switch>
-              <Route exact path="/" render={(props) => <Home {...props} auth={authProps} />} />
-              {/* <Route exact path="/products" render={(props) => <Products {...props} auth={authProps} />} /> */}
-              <ProtectedRoute path="/photos" loggedIn={this.state.isAuthenticated} verified={this.state.isVerified} component={Photos} />
-              <ProtectedRoute path="/admin" loggedIn={this.state.isAuthenticated} verified={this.state.isVerified} component={PhotosAdmin} />
-              <ProtectedRoute path="/profile" loggedIn={this.state.isAuthenticated} verified={this.state.isVerified} component={ProfileAdmin} />
-              <ProtectedRoute path="/itemlist" loggedIn={this.state.isAuthenticated} verified={this.state.isVerified} component={ItemList} />
-              <Route exact path="/admin" render={(props) => <PhotosAdmin {...props} auth={authProps} />} />
-              <Route exact path="/login" render={(props) => <LogIn {...props} auth={authProps} handleLogIn={this.handleLogIn} />} />
-              <Route exact path="/verify" render={(props) => <VerifyAccount {...props} auth={authProps} />} />
-              <Route exact path="/resendverification" render={(props) => <ResendVerification {...props} auth={authProps} />} />
-              <Route exact path="/register" render={(props) => <Register {...props} auth={authProps} />} />
-              <Route exact path="/forgotpassword" render={(props) => <ForgotPassword {...props} auth={authProps} />} />
-              <Route exact path="/forgotpasswordverification" render={(props) => <ForgotPasswordVerification {...props} auth={authProps} />} />
-              <Route exact path="/changepassword" render={(props) => <ChangePassword {...props} auth={authProps} />} />
-              <Route exact path="/changepasswordconfirmation" render={(props) => <ChangePasswordConfirm {...props} auth={authProps} />} />
-              <Route exact path="/welcome" render={(props) => <Welcome {...props} auth={authProps} />} />
-            </Switch>
-            <Footer />
+      <ChakraProvider>
+        { !this.state.isAuthenticating && (
+          < div className="App">
+            <Router>
+              <div>
+                <Navbar auth={authProps} handleLogOut={this.handleLogOut} />
+                <Switch>
+                  <Route exact path="/" render={(props) => <Home {...props} auth={authProps} />} />
+                  {/* <Route exact path="/products" render={(props) => <Products {...props} auth={authProps} />} /> */}
+                  <ProtectedRoute path="/photos" loggedIn={this.state.isAuthenticated} verified={this.state.isVerified} component={Photos} />
+                  <ProtectedRoute path="/admin" loggedIn={this.state.isAuthenticated} verified={this.state.isVerified} component={PhotosAdmin} />
+                  <ProtectedRoute path="/profile" loggedIn={this.state.isAuthenticated} verified={this.state.isVerified} component={ProfileAdmin} />
+                  <ProtectedRoute path="/itemlist" loggedIn={this.state.isAuthenticated} verified={this.state.isVerified} component={ItemList} />
+                  <Route exact path="/admin" render={(props) => <PhotosAdmin {...props} auth={authProps} />} />
+                  <Route exact path="/login" render={(props) => <LogIn {...props} auth={authProps} handleLogIn={this.handleLogIn} />} />
+                  <Route exact path="/verify" render={(props) => <VerifyAccount {...props} auth={authProps} />} />
+                  <Route exact path="/resendverification" render={(props) => <ResendVerification {...props} auth={authProps} />} />
+                  <Route exact path="/register" render={(props) => <Register {...props} auth={authProps} />} />
+                  <Route exact path="/forgotpassword" render={(props) => <ForgotPassword {...props} auth={authProps} />} />
+                  <Route exact path="/forgotpasswordverification" render={(props) => <ForgotPasswordVerification {...props} auth={authProps} />} />
+                  <Route exact path="/changepassword" render={(props) => <ChangePassword {...props} auth={authProps} />} />
+                  <Route exact path="/changepasswordconfirmation" render={(props) => <ChangePasswordConfirm {...props} auth={authProps} />} />
+                  <Route exact path="/welcome" render={(props) => <Welcome {...props} auth={authProps} />} />
+                </Switch>
+                <Footer />
+              </div>
+            </Router>
           </div>
-        </Router>
-      </div>
+        )
+        }
+      </ChakraProvider>
     );
   }
 }

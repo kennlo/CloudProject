@@ -77,11 +77,19 @@ class ItemDisplay extends Component {
 
   render() {
     return (
-      <Box display="grid" gridTemplateColumns="repeat(3, 1fr)" gap="40px" padding="20px">
+      <Box display="grid" gridTemplateColumns="repeat(3, 1fr)" gap="20px" padding="20px"
+        margin={2}>
         {Array.from(this.props.tableData.entries()).map(([key, value]) => (
-          <Box key={key} borderWidth="1px" borderRadius="lg" overflow="hidden">
-            <Image src={value.imageURL} alt={value.name} height="200px" objectFit="cover" />
-            <Box p="6">
+          <Box key={key} borderWidth="1px" borderRadius="7px" boxShadow="lg" justifyContent="center" overflow="hidden"
+            _hover={{
+              transition: 'transform .2s',
+              transform: 'scale(1.02)',
+            }}>
+            <Box borderRadius="7px" display="flex" justifyContent="center" overflow="hidden"
+            >
+              <Image display="flex" src={value.imageURL} alt={value.name} w="200px" height="200px" objectFit="cover" />
+            </Box>
+            <Box p="3">
               {this.state.user === 'cb2550db-00e0-4210-8be7-61853387898c' && (
                 <Text fontSize="sm" color="gray.500" mb="2">ID: {value.id}</Text>
               )}

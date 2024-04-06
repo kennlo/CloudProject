@@ -1,7 +1,13 @@
 import React, { Component } from 'react';
-import { Box, Button, Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react';
+import { Box, Button, Table, Tbody, Td, Th, Thead, Tr, Tfoot } from '@chakra-ui/react';
 import { v4 as uuidv4 } from 'uuid';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
+
+export var orderID;
+export var items;
+export var orderdate;
+export var totalCost;
 
 class CartDisplay extends Component {
   constructor(props) {
@@ -17,15 +23,29 @@ class CartDisplay extends Component {
     this.props.onDeleteItem(id);
   }
 
-  sendOrder = async() => {
-    const orderID = uuidv4();
-    
+  generateID() {
+    orderID = uuidv4();
+    orderdate = new Date().toString();
+  }
+
+  calculateTotalCost() {
+    let price = 0;
+
+    for (const value of this.props.tableData.values()) {
+      price += value.quantity * value.price;
+    }
+
+    return price;
+  }
+
+  sendOrder = async () => {
+
     await axios.put('https://hb8pt1nnyd.execute-api.us-east-1.amazonaws.com/orders',
       {
         id: orderID,
         orderdate: new Date().toString(),
         'order-status': 'pending',
-        userid: this.state.user,
+        userid: this.props.userid,
       },
       {
         headers: {
@@ -65,11 +85,12 @@ class CartDisplay extends Component {
           console.log(err);
         });
     }
-
   }
 
   render() {
-    const items = Array.from(this.props.tableData.entries());
+    items = Array.from(this.props.tableData.entries());
+    totalCost = this.calculateTotalCost();
+
     console.log(items);
     if (items.length === 0) {
       return (
@@ -104,9 +125,16 @@ class CartDisplay extends Component {
               </Tr>
             ))}
           </Tbody>
+          <Tfoot>
+            <Tr>
+              Total Cost: {totalCost}
+            </Tr>
+          </Tfoot>
         </Table>
-        <Button mt={4} colorScheme="green" onClick={this.sendOrder}>
-          Send Order
+        <Button mt={4} colorScheme="green" onClick={() => { this.generateID(); this.sendOrder(); }}>
+          <Link to={{ pathname: '/ordersummary', state: { orderID, orderdate, items, totalCost } }}>
+            Send Order
+          </Link>
         </Button>
       </Box>
     );

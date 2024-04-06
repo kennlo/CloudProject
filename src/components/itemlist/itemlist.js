@@ -1,10 +1,11 @@
 import React, { Component, Fragment } from 'react';
 import { Auth } from 'aws-amplify';
 import axios from 'axios';
-//import TableDisplay from '../table/TableDisplay';
+import {
+  Flex, Box, Heading, Text, Input, Button, FormControl, FormLabel,
+} from '@chakra-ui/react';
 import ItemDisplay from '../itemlist/itemdisplay';
 import CartDisplay from '../cartlist/cartdisplay';
-
 
 
 export default class ItemList extends Component {
@@ -110,82 +111,58 @@ export default class ItemList extends Component {
   render() {
     return (
       <Fragment>
-        <div style={{ display: 'flex', flexDirection: 'row' }}>
-          <div style={{ width: '70%' }}>
-            <section className="section">
+        <Flex>
+          <Box width="70%" p="4">
+            <Box as="section" className="section">
               {/* <div className="container">
                 <h1>Items</h1>
                 <p className="subtitle is-5">All the items available.</p>
                 <TableDisplay tableData={this.state.tableData} />
               </div> */}
-              <div className="container">
-                <h1>Items</h1>
-                <p className="subtitle is-5">All the items available.</p>
+              <Box className="container">
+                <Heading as="h1" size="lg">Items</Heading>
+                <Text className="subtitle" fontSize="md">All the items available.</Text>
                 <ItemDisplay tableData={this.state.tableData} onAddItem={this.handleAddItem} />
-              </div>
-              <div>
-                {this.state.user === 'cb2550db-00e0-4210-8be7-61853387898c' ? (
-                  <form onSubmit={this.handleSend}>
-                    <h1> Add Item to Inventory </h1>
-                    <body>
-                      <label>ImageURL</label>
-                      <input
-                        type="string"
-                        name="imageURL"
-                        onChange={this.handleChange}
-                        value={this.state.imageURL}
-                      />
-                    </body>
-                    <body>
-                      <label>Name</label>
-                      <input
-                        type="string"
-                        name="name"
-                        onChange={this.handleChange}
-                        value={this.state.name}
-                      />
-                    </body>
-                    <body>
-                      <label>Price</label>
-                      <input
-                        type="number"
-                        name="price"
-                        onChange={this.handleChange}
-                        value={this.state.price}
-                      />
-                    </body>
-                    <button type="submit">Add Item</button>
-                  </form>
-                ) : null}
-              </div>
-              <div>
-                {this.state.user === 'cb2550db-00e0-4210-8be7-61853387898c' ? (
-                  <form onSubmit={this.handleDelete}>
-                    <h1> Delete Item from Inventory </h1>
-                    <body>
-                      <label>Item ID</label>
-                      <input
-                        type="string"
-                        name="id"
-                        onChange={this.handleChange}
-                        value={this.state.id}
-                      />
-                    </body>
-                    <button type="submit">Delete Item</button>
-                  </form>
-                ) : null}
-              </div>
-            </section>
-          </div>
-          <div style={{ width: '30%', borderLeft: '2px solid black' }}>
-            <section className="section">
-              <div className='container'>
-                <h1 style={{ borderBottom: '2px solid black' }}>Cart</h1>
-                <CartDisplay userid={this.state.user} tableData={this.state.items} onDeleteItem = {this.handleDeleteCartItem} />
-              </div>
-            </section>
-          </div>
-        </div>
+              </Box>
+              {this.state.user === 'cb2550db-00e0-4210-8be7-61853387898c' && (
+                <Fragment>
+                  <Box as="div" className="container">
+                    <Heading as="h1" size="lg">Add Item to Inventory</Heading>
+                    <FormControl>
+                      <FormLabel>Image URL</FormLabel>
+                      <Input type="string" name="imageURL" onChange={this.handleChange} value={this.state.imageURL} />
+                    </FormControl>
+                    <FormControl>
+                      <FormLabel>Name</FormLabel>
+                      <Input type="string" name="name" onChange={this.handleChange} value={this.state.name} />
+                    </FormControl>
+                    <FormControl>
+                      <FormLabel>Price</FormLabel>
+                      <Input type="number" name="price" onChange={this.handleChange} value={this.state.price} />
+                    </FormControl>
+                    <Button colorScheme="blue" mt="4" onClick={this.handleSend}>Add Item</Button>
+                  </Box>
+                  <Box as="div" className="container">
+                    <Heading as="h1" size="lg">Delete Item from Inventory</Heading>
+                    <FormControl>
+                      <FormLabel>Item ID</FormLabel>
+                      <Input type="string" name="id" onChange={this.handleChange} value={this.state.id} />
+                    </FormControl>
+                    <Button colorScheme="red" mt="4" onClick={this.handleDelete}>Delete Item</Button>
+                  </Box>
+                </Fragment>
+              )}
+            </Box>
+          </Box>
+          <Box width="30%" borderLeft="2px solid black">
+            <Box as="section" className="section" p="4">
+              <Box className='container'>
+                <Heading as="h1" size="lg" borderBottom="2px solid black">Cart</Heading>
+                <CartDisplay userid={this.state.user} tableData={this.state.items} onDeleteItem={this.handleDeleteCartItem} />
+              </Box>
+            </Box>
+          </Box>
+        </Flex>
       </Fragment>
     );
   }

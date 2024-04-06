@@ -85,9 +85,8 @@ class ItemDisplay extends Component {
               transition: 'transform .2s',
               transform: 'scale(1.02)',
             }}>
-            <Box borderRadius="7px" display="flex" justifyContent="center" overflow="hidden"
-            >
-              <Image display="flex" src={value.imageURL} alt={value.name} w="200px" height="200px" objectFit="cover" />
+            <Box borderRadius="7px" display="flex" justifyContent="center" overflow="hidden">
+              <Image display="flex" src={value.imageURL} alt={value.name} h="200px" />
             </Box>
             <Box p="3">
               {this.state.user === 'cb2550db-00e0-4210-8be7-61853387898c' && (

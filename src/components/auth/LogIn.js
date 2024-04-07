@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Alert } from '@chakra-ui/react';
+import { Alert, AlertIcon, AlertTitle } from '@chakra-ui/react';
 import FormErrors from '../FormErrors';
 import Validate from '../../lib/formValidation';
 
@@ -57,7 +57,8 @@ class LogIn extends Component {
     if (this.props.loginFailure) {
       return (
         <Alert status="error">
-          <p>{this.props.errMessage}</p>
+          <AlertIcon />
+          <AlertTitle>{this.props.errMessage}</AlertTitle>
         </Alert>
       );
     }

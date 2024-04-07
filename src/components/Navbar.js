@@ -7,22 +7,22 @@ export default class Navbar extends Component {
     return (
       <nav className="navbar" role="navigation" aria-label="main navigation">
         <div className="navbar-brand">
-          <a className="navbar-item" href="/">
+          <a className="navbar-item" href="/itemlist">
             <img src="5891-cat-sus.png" width="112" height="28" alt="aws logo" />
           </a>
         </div>
 
         <div id="navbarBasicExample" className="navbar-menu">
           <div className="navbar-start">
-            <a href="/" className="navbar-item">
+            {/* <a href="/" className="navbar-item">
               Home
-            </a>
+            </a> */}
             <a href="/photos" className="navbar-item">
               Current Orders
             </a>
-            <a href="/admin" className="navbar-item">
+            {/* <a href="/admin" className="navbar-item">
               Menu
-            </a>
+            </a> */}
             <a href="/profile" className="navbar-item">
               Profile
             </a>

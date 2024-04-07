@@ -40,38 +40,14 @@ class CartDisplay extends Component {
 
   sendOrder = async () => {
 
-    await axios.put('https://hb8pt1nnyd.execute-api.us-east-1.amazonaws.com/orders',
-      {
-        id: orderID,
-        orderdate: new Date().toString(),
-        'order-status': 'pending',
-        userid: this.props.userid,
-      },
-      {
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      }
-    ).then(res => {
-      console.log(res);
-    })
-      .catch(err => {
-        console.log(err);
-      });
-
-    for (const [key, value] of this.props.tableData) {
-
-      const uid = uuidv4();
-      console.log(key);
-
-      await axios.put(
-        'https://hb8pt1nnyd.execute-api.us-east-1.amazonaws.com/orderitem',
+    if (this.props.userid)
+    {
+      await axios.put('https://hb8pt1nnyd.execute-api.us-east-1.amazonaws.com/orders',
         {
-          id: uid,
-          itemID: value.name,
-          quantity: value.quantity,
-          orderid: orderID,
-          price: value.quantity * value.price
+          id: orderID,
+          orderdate: new Date().toString(),
+          'order-status': 'pending',
+          userid: this.props.userid,
         },
         {
           headers: {
@@ -84,6 +60,33 @@ class CartDisplay extends Component {
         .catch(err => {
           console.log(err);
         });
+
+      for (const [key, value] of this.props.tableData) {
+
+        const uid = uuidv4();
+        console.log(key);
+
+        await axios.put(
+          'https://hb8pt1nnyd.execute-api.us-east-1.amazonaws.com/orderitem',
+          {
+            id: uid,
+            itemID: value.name,
+            quantity: value.quantity,
+            orderid: orderID,
+            price: value.quantity * value.price
+          },
+          {
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          }
+        ).then(res => {
+          console.log(res);
+        })
+          .catch(err => {
+            console.log(err);
+          });
+      }
     }
   }
 

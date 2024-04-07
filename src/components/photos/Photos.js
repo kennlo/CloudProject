@@ -33,7 +33,7 @@ export default class Photos extends Component {
           .map(item => ({
             id: item.id,
             status: item['order-status'],
-            orderid:item['order-id'],
+            userid:item.userid,
             orderdate: item.orderdate,
             ...(this.state.user === 'cb2550db-00e0-4210-8be7-61853387898c' ? { userid: item.userid  } : {})
           }))
@@ -42,8 +42,9 @@ export default class Photos extends Component {
   }
   async handleCancelOrder(orderId) {
     try {
+      console.log(orderId);
       const payload = {
-        id: orderId.toString(), // Ensure orderId is a string
+        'id': orderId.toString(), // Ensure orderId is a string
         'order-status': 'Cancelled'
       };
 
@@ -102,6 +103,9 @@ export default class Photos extends Component {
               <Thead bg="gray.100">
                 <Tr>
                   <Th>Order ID</Th>
+                  {this.state.user === 'cb2550db-00e0-4210-8be7-61853387898c' && (
+                    <Th>User ID</Th>
+                  )}
                   <Th>Status</Th>
                   <Th>Order Date</Th>
                   <Th>Action</Th>
@@ -111,6 +115,9 @@ export default class Photos extends Component {
                 {this.state.tableData.map(order => (
                   <Tr key={order.id}>
                     <Td>{order.id}</Td>
+                    {this.state.user === 'cb2550db-00e0-4210-8be7-61853387898c' && (
+                      <Td>{order.userid}</Td>
+                    )}
                     <Td>{order.status}</Td>
                     <Td>{order.orderdate}</Td>
                     <Td>

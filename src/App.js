@@ -9,7 +9,7 @@ import { ChakraProvider } from '@chakra-ui/react';
 import './App.css';
 
 import Navbar from './components/Navbar';
-import Home from './components/Home';
+// import Home from './components/Home';
 import Photos from './components/photos/Photos';
 import PhotosAdmin from './components/PhotosAdmin';
 import ProfileAdmin from './components/ProfileAdmin';
@@ -134,7 +134,7 @@ class App extends Component {
               <div>
                 <Navbar auth={authProps} handleLogOut={this.handleLogOut} />
                 <Switch>
-                  <Route exact path="/" render={(props) => <Home {...props} auth={authProps} />} />
+                  <Route exact path="/" render={(props) => <ItemList {...props} auth={authProps} />} />
                   {/* <Route exact path="/products" render={(props) => <Products {...props} auth={authProps} />} /> */}
                   <ProtectedRoute path="/photos" loggedIn={this.state.isAuthenticated} verified={this.state.isVerified} component={Photos} />
                   <ProtectedRoute path="/admin" loggedIn={this.state.isAuthenticated} verified={this.state.isVerified} component={PhotosAdmin} />

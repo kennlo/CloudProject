@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { Auth } from 'aws-amplify';
+import { Button } from '@chakra-ui/react';
 export default class ProfileAdmin extends Component {
 
   state = {
@@ -28,11 +29,12 @@ export default class ProfileAdmin extends Component {
           <div className="container">
             <h1>Profile Admin</h1>
             <p className="subtitle is-5">Manage your user profile below:</p>
-            <br />
             <div className="columns">
               <div className="column is-one-third">
                 <form action="/ChangePassword">
-                  <input type="submit" value="Change Password" />
+                  <Button type="submit">
+                    Change Password
+                  </Button>
                 </form>
                 <br />
                 {

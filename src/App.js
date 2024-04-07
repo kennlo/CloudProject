@@ -61,7 +61,9 @@ class App extends Component {
     isAuthenticated: false,
     isAuthenticating: true,
     isVerified: false,
-    user: null
+    user: null,
+    loginFailure: false,
+    errorMessage:'',
   }
 
   handleLogOut = async () => {
@@ -86,11 +88,14 @@ class App extends Component {
         user: user,
         isAuthenticated: true,
       });
+      window.location.href = '/';
     } catch (error) {
+      this.setState({ loginFailure: true });
       if (error.code && error.code === 'UserNotConfirmedException') {
         window.location.href = '/verify';
       }
-      console.log(error.message);
+      this.setState({ errorMessage: error.message });
+      // console.log(error.message);
     }
   }
 
@@ -142,7 +147,7 @@ class App extends Component {
                   <ProtectedRoute path="/itemlist" loggedIn={this.state.isAuthenticated} verified={this.state.isVerified} component={ItemList} />
                   <ProtectedRoute path="/ordersummary" loggedIn={this.state.isAuthenticated} verified={this.state.isVerified} component={OrderSummary} />
                   <Route exact path="/admin" render={(props) => <PhotosAdmin {...props} auth={authProps} />} />
-                  <Route exact path="/login" render={(props) => <LogIn {...props} auth={authProps} handleLogIn={this.handleLogIn} />} />
+                  <Route exact path="/login" render={(props) => <LogIn {...props} loginFailure={this.state.loginFailure} errMessage={this.state.errorMessage} auth={authProps} handleLogIn={this.handleLogIn} />} />
                   <Route exact path="/verify" render={(props) => <VerifyAccount {...props} auth={authProps} />} />
                   <Route exact path="/resendverification" render={(props) => <ResendVerification {...props} auth={authProps} />} />
                   <Route exact path="/register" render={(props) => <Register {...props} auth={authProps} />} />

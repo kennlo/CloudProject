@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import { Alert } from '@chakra-ui/react';
 import FormErrors from '../FormErrors';
 import Validate from '../../lib/formValidation';
 
@@ -7,6 +7,7 @@ class LogIn extends Component {
   state = {
     username: '',
     password: '',
+    loginfail: this.props.loginFailure,
     errors: {
       cognito: null,
       blankfield: false
@@ -37,16 +38,28 @@ class LogIn extends Component {
     // AWS Cognito integration here
     try {
       await this.props.handleLogIn(this.state.username, this.state.password);
-      this.props.history.push('/');
+      // this.props.history.push('/');
     }catch(error) {
       let err = null;
       !error.message ? err = { 'message': error } : err = error;
+      console.log(this.props.errors.message);
+
       this.setState({
         errors: {
           ...this.state.errors,
           cognito: err
         }
       });
+    }
+  };
+
+  alertFail = () => {
+    if (this.props.loginFailure) {
+      return (
+        <Alert status="error">
+          <p>{this.props.errMessage}</p>
+        </Alert>
+      );
     }
   };
 
@@ -104,6 +117,9 @@ class LogIn extends Component {
                   Login
                 </button>
               </p>
+              <br />
+              {this.alertFail()}
+    
             </div>
           </form>
         </div>

@@ -1,10 +1,9 @@
 import React, { Component, Fragment } from 'react';
 import { Auth } from 'aws-amplify';
+import { Box, Button, Heading, Text, Td, Th, Tr, Thead, Tbody, Table } from '@chakra-ui/react';
 import axios from 'axios';
-import TableDisplay from '../table/TableDisplay';
 
 export default class Photos extends Component {
-
   state = {
     response: '',
     filelist: '',
@@ -41,6 +40,21 @@ export default class Photos extends Component {
       });
     });
   }
+  async handleCancelOrder(orderId) {
+    try {
+      const payload = {
+        id: orderId.toString(), // Ensure orderId is a string
+        'order-status': 'Cancelled'
+      };
+
+      await axios.patch('https://hb8pt1nnyd.execute-api.us-east-1.amazonaws.com/orders', payload);
+
+      // Refresh the list of orders after cancellation
+      await this.getDatabaseItems();
+    } catch (error) {
+      console.log(error);
+    }
+  }
   async handleDelete() {
     // event.preventDefault();
     // //console.log(this.state.inputValue);
@@ -52,7 +66,7 @@ export default class Photos extends Component {
     // });
     // if (itemid === this.state.user) {
     await axios.patch('https://hb8pt1nnyd.execute-api.us-east-1.amazonaws.com/orders', {
-      'order-id': this.state.inputValue,
+      'id': this.state.inputValue,
       'order-status': 'Cancelled'
     });
     // }
@@ -76,22 +90,40 @@ export default class Photos extends Component {
   render() {
     return (
       <Fragment>
-        <section className="section">
-          <div className="container">
-            <h1>Your Orders</h1>
-            <p className="subtitle is-5">Review your curent orders</p>
-            <TableDisplay tableData={this.state.tableData} />
-            <form onSubmit={this.handleDelete}>
-              <input
-                type="number"
-                name="inputValue"
-                onChange={this.handleChange}
-                value={this.state.inputValue}
-              />
-              <button type="submit">Cancel Order</button>
-            </form>
-          </div>
-        </section>
+        <Box p="4" borderRadius="lg" width="90%" maxW="800px" margin="0 auto">
+          <Heading as="h1" size="xl" mb="4">
+            Your Orders
+          </Heading>
+          <Text fontSize="lg" mb="4">
+            Review your current orders
+          </Text>
+          <Box overflowX="auto">
+            <Table variant="simple" colorScheme="gray" borderRadius="md" borderWidth="1px" borderColor="gray.200">
+              <Thead bg="gray.100">
+                <Tr>
+                  <Th>Order ID</Th>
+                  <Th>Status</Th>
+                  <Th>Order Date</Th>
+                  <Th>Action</Th>
+                </Tr>
+              </Thead>
+              <Tbody>
+                {this.state.tableData.map(order => (
+                  <Tr key={order.id}>
+                    <Td>{order.id}</Td>
+                    <Td>{order.status}</Td>
+                    <Td>{order.orderdate}</Td>
+                    <Td>
+                      <Button colorScheme="red" size="sm" onClick={() => this.handleCancelOrder(order.id)}>
+                        Cancel Order
+                      </Button>
+                    </Td>
+                  </Tr>
+                ))}
+              </Tbody>
+            </Table>
+          </Box>
+        </Box>
       </Fragment>
     );
   }

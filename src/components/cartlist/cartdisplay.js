@@ -132,8 +132,8 @@ class CartDisplay extends Component {
             </Tr>
           </Tfoot>
         </Table>
-        <Button mt="4" colorScheme="green">
-          <Link to={{ pathname: '/ordersummary', state: { items, totalCost } }}>Send Order</Link>
+        <Button mt={4} colorScheme="green" onClick={() => { this.generateID(); this.sendOrder(); }}>
+          <Link to={{ pathname: '/ordersummary', state: { orderID, orderdate, items, totalCost } }}>Send Order</Link>
         </Button>
       </Box>
     );

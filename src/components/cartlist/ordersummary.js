@@ -23,6 +23,8 @@ class OrderSummary extends Component {
     return (
       <Box p="4" maxWidth="800px" mx="auto">
         <Heading textAlign="center" fontSize="3xl" mb="6">Thank you for your order</Heading>
+        <Heading textAlign="center" fontSize="xl" mb="6"> Order ID: {this.state.id}</Heading>
+        <Heading textAlign="center" fontSize="xl" mb="6"> Date of Transaction: {this.state.date}</Heading>
         <Box bg="white" p="4" borderRadius="lg" boxShadow="lg" mb="8">
           <Heading fontSize="xl" mb="4">Items Purchased</Heading>
           <Table variant="simple" colorScheme="gray" borderRadius="md" borderWidth="1px" borderColor="gray.200">

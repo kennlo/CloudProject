@@ -101,9 +101,9 @@ class CartDisplay extends Component {
     }
 
     return (
-      <Box>
-        <Table variant="simple" colorScheme="black">
-          <Thead>
+      <Box p="4" bg="white" borderRadius="lg">
+        <Table variant="simple" colorScheme="gray" borderRadius="md" borderWidth="1px" borderColor="gray.200">
+          <Thead bg="gray.100">
             <Tr>
               <Th>Name</Th>
               <Th>Quantity</Th>
@@ -116,25 +116,24 @@ class CartDisplay extends Component {
               <Tr key={itemKey}>
                 <Td>{item.name}</Td>
                 <Td>{item.quantity}</Td>
-                <Td>{item.price * item.quantity}</Td>
+                <Td>${item.price * item.quantity}</Td>
                 <Td>
-                  <Button colorScheme="red" onClick={() => this.deleteCartItem(itemKey)}>
+                  <Button colorScheme="red" onClick={() => this.deleteCartItem(itemKey)} size="sm">
                     Remove
                   </Button>
                 </Td>
               </Tr>
             ))}
           </Tbody>
-          <Tfoot>
+          <Tfoot bg="gray.100">
             <Tr>
-              Total Cost: {totalCost}
+              <Th>Total Cost:</Th>
+              <Th colSpan={3} textAlign="right">${totalCost}</Th>
             </Tr>
           </Tfoot>
         </Table>
-        <Button mt={4} colorScheme="green" onClick={() => { this.generateID(); this.sendOrder(); }}>
-          <Link to={{ pathname: '/ordersummary', state: { orderID, orderdate, items, totalCost } }}>
-            Send Order
-          </Link>
+        <Button mt="4" colorScheme="green">
+          <Link to={{ pathname: '/ordersummary', state: { items, totalCost } }}>Send Order</Link>
         </Button>
       </Box>
     );

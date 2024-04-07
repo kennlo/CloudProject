@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Box, Table, Tbody, Td, Th, Thead, Tr, Tfoot } from '@chakra-ui/react';
+import { Heading, Box, Table, Tbody, Td, Th, Thead, Tr, Tfoot } from '@chakra-ui/react';
 import { orderID, orderdate, items, totalCost } from './cartdisplay';
 
 class OrderSummary extends Component {
@@ -21,14 +21,12 @@ class OrderSummary extends Component {
     console.log(this.state.itemlist);
 
     return (
-      <div>
-        <h1 style={{ fontSize: '36px', textAlign: 'center' }}> Thank you for your order</h1>
-        <h2 style={{ fontSize: '20px', textAlign: 'center' }}> Order ID: {this.state.id}</h2>
-        <h3 style={{ fontSize: '20px', textAlign: 'center' }}> Date of Transaction: {this.state.date}</h3>
-        <Box>
-          <h4 style={{ fontSize: '20px'}}>Item Purchased</h4>
-          <Table variant="striped" colorScheme="black">
-            <Thead>
+      <Box p="4" maxWidth="800px" mx="auto">
+        <Heading textAlign="center" fontSize="3xl" mb="6">Thank you for your order</Heading>
+        <Box bg="white" p="4" borderRadius="lg" boxShadow="lg" mb="8">
+          <Heading fontSize="xl" mb="4">Items Purchased</Heading>
+          <Table variant="simple" colorScheme="gray" borderRadius="md" borderWidth="1px" borderColor="gray.200">
+            <Thead bg="gray.100">
               <Tr>
                 <Th>Name</Th>
                 <Th>Quantity</Th>
@@ -40,18 +38,24 @@ class OrderSummary extends Component {
                 <Tr key={itemKey}>
                   <Td>{item.name}</Td>
                   <Td>{item.quantity}</Td>
-                  <Td>{item.price * item.quantity}</Td>
+                  <Td>${item.price * item.quantity}</Td>
                 </Tr>
               ))}
             </Tbody>
-            <Tfoot>
+            <Tfoot bg="gray.100">
               <Tr>
-                Total Cost: {this.state.cost}
+                <Th>Total Cost:</Th>
+                <Th></Th>
+                <Th>${this.state.cost}</Th>
               </Tr>
             </Tfoot>
           </Table>
         </Box>
-      </div>
+        <Box textAlign="center">
+          <Heading fontSize="xl" mb="4">Thank you for shopping with us!</Heading>
+          <p>We hope to see you again soon.</p>
+        </Box>
+      </Box>
     );
   }
 }

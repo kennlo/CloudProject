@@ -70,6 +70,7 @@ export default class ItemList extends Component {
       }
     ).then(res => {
       console.log(res);
+      window.location.reload();
     });
   }
 
@@ -106,6 +107,7 @@ export default class ItemList extends Component {
       {
         id: this.state.id,
       });
+    window.location.reload();
   }
 
   render() {

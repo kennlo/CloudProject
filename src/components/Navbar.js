@@ -17,6 +17,9 @@ export default class Navbar extends Component {
             {/* <a href="/" className="navbar-item">
               Home
             </a> */}
+            <a href="/itemlist" className="navbar-item">
+              All Menu Items
+            </a>
             <a href="/photos" className="navbar-item">
               Current Orders
             </a>
@@ -25,9 +28,6 @@ export default class Navbar extends Component {
             </a> */}
             <a href="/profile" className="navbar-item">
               Profile
-            </a>
-            <a href="/itemlist" className="navbar-item">
-              All Menu Items
             </a>
           </div>
 
